@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tanilink — Masuk / Daftar</title>
+  <link rel="stylesheet" href="/static/css/main.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="logo">
+        <span class="logo-icon">🌾</span>
+        <span class="logo-text">Tanilink</span>
+      </div>
+      <p class="logo-tagline">Petani ke Pembeli, Langsung.</p>
+    </div>
+  </header>
+
+  <main class="container auth-wrapper">
+
+    <!-- Tab switcher -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="login">Masuk</button>
+      <button class="tab-btn" data-tab="register">Daftar</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <section id="tab-login" class="tab-panel">
+      <h2 class="form-title">Masuk ke Akun</h2>
+      <div id="login-alert" class="alert hidden"></div>
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" name="email" placeholder="email@example.com" required />
+          <span class="field-error" id="err-login-email"></span>
+        </div>
+        <div class="field">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" name="password" placeholder="••••••••" required />
+          <span class="field-error" id="err-login-password"></span>
+        </div>
+        <button type="submit" class="btn-primary" id="login-submit">Masuk</button>
+      </form>
+    </section>
+
+    <!-- REGISTER FORM -->
+    <section id="tab-register" class="tab-panel hidden">
+      <h2 class="form-title">Buat Akun Baru</h2>
+      <div id="register-alert" class="alert hidden"></div>
+      <form id="register-form" novalidate>
+        <div class="field">
+          <label for="reg-name">Nama Lengkap</label>
+          <input type="text" id="reg-name" name="full_name" placeholder="Budi Santoso" required minlength="2" maxlength="100" />
+          <span class="field-error" id="err-reg-name"></span>
+        </div>
+        <div class="field">
+          <label for="reg-email">Email</label>
+          <input type="email" id="reg-email" name="email" placeholder="email@example.com" required />
+          <span class="field-error" id="err-reg-email"></span>
+        </div>
+        <div class="field">
+          <label for="reg-phone">Nomor HP <span class="optional">(opsional)</span></label>
+          <input type="tel" id="reg-phone" name="phone" placeholder="08123456789" pattern="^(\+62|0)[0-9]{8,13}$" />
+          <span class="field-error" id="err-reg-phone"></span>
+        </div>
+        <div class="field">
+          <label for="reg-password">Password</label>
+          <input type="password" id="reg-password" name="password" placeholder="Min. 8 karakter" required minlength="8" />
+          <span class="field-error" id="err-reg-password"></span>
+        </div>
+        <div class="field">
+          <label>Saya adalah</label>
+          <div class="role-group">
+            <label class="role-card">
+              <input type="radio" name="role" value="farmer" required />
+              <span class="role-icon">🧑‍🌾</span>
+              <span>Petani</span>
+            </label>
+            <label class="role-card">
+              <input type="radio" name="role" value="buyer" />
+              <span class="role-icon">🛒</span>
+              <span>Pembeli</span>
+            </label>
+          </div>
+          <span class="field-error" id="err-reg-role"></span>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="reg-province">Provinsi <span class="optional">(opsional)</span></label>
+            <input type="text" id="reg-province" name="province" placeholder="Jawa Barat" maxlength="100" />
+          </div>
+          <div class="field">
+            <label for="reg-city">Kota/Kabupaten <span class="optional">(opsional)</span></label>
+            <input type="text" id="reg-city" name="city" placeholder="Bandung" maxlength="100" />
+          </div>
+        </div>
+        <button type="submit" class="btn-primary" id="register-submit">Daftar Sekarang</button>
+      </form>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 Tanilink — Mendukung Petani Lokal Indonesia</p>
+    </div>
+  </footer>
+
+  <script src="/static/js/auth.js"></script>
+</body>
+</html>

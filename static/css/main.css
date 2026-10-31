@@ -1,0 +1,255 @@
+/* ── Tanilink — Main Stylesheet ────────────────────────────────────────── */
+
+/* Tokens */
+:root {
+  --green-700: #2d6a2f;
+  --green-600: #3a7d3c;
+  --green-500: #4caf50;
+  --green-100: #e8f5e9;
+  --earth-600:  #795548;
+  --earth-100:  #efebe9;
+  --bg:         #fafaf8;
+  --surface:    #ffffff;
+  --border:     #dde4d4;
+  --text:       #1a2218;
+  --muted:      #5a6b58;
+  --danger:     #c62828;
+  --danger-bg:  #ffebee;
+  --success:    #2e7d32;
+  --success-bg: #e8f5e9;
+  --radius:     10px;
+  --shadow:     0 2px 8px rgba(45,106,47,.12);
+  --transition: 0.18s ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 15px; scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Layout ─────────────────────────────────────────────────────────────── */
+
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+
+.site-header {
+  background: var(--green-700);
+  padding: 1.25rem 0;
+  text-align: center;
+}
+
+.site-header .container { max-width: 100%; }
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+}
+
+.logo-icon  { font-size: 1.8rem; }
+.logo-text  { font-size: 1.6rem; font-weight: 700; color: #fff; letter-spacing: -.5px; }
+.logo-tagline { color: var(--green-100); font-size: .85rem; margin-top: .2rem; }
+
+/* ── Auth Wrapper ────────────────────────────────────────────────────────── */
+
+.auth-wrapper {
+  flex: 1;
+  padding-block: 2rem;
+}
+
+/* ── Tabs ────────────────────────────────────────────────────────────────── */
+
+.tab-bar {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: .75rem;
+  background: var(--surface);
+  border: none;
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+
+.tab-btn.active {
+  background: var(--green-700);
+  color: #fff;
+}
+
+.tab-btn:not(.active):hover { background: var(--green-100); }
+
+/* ── Panels ─────────────────────────────────────────────────────────────── */
+
+.tab-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  box-shadow: var(--shadow);
+}
+
+.tab-panel.hidden { display: none; }
+
+.form-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--green-700);
+  margin-bottom: 1.25rem;
+}
+
+/* ── Form Fields ────────────────────────────────────────────────────────── */
+
+.field {
+  margin-bottom: 1rem;
+}
+
+.field label {
+  display: block;
+  font-size: .85rem;
+  font-weight: 600;
+  margin-bottom: .35rem;
+  color: var(--text);
+}
+
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="password"],
+.field input[type="tel"] {
+  width: 100%;
+  padding: .65rem .8rem;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-size: .95rem;
+  background: var(--bg);
+  color: var(--text);
+  transition: border-color var(--transition);
+  outline: none;
+}
+
+.field input:focus { border-color: var(--green-600); }
+.field input.invalid { border-color: var(--danger); }
+
+.field-error {
+  display: block;
+  font-size: .78rem;
+  color: var(--danger);
+  margin-top: .25rem;
+  min-height: 1em;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem;
+}
+
+.optional { font-weight: 400; color: var(--muted); }
+
+/* ── Role selector ──────────────────────────────────────────────────────── */
+
+.role-group {
+  display: flex;
+  gap: .75rem;
+  margin-top: .35rem;
+}
+
+.role-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .35rem;
+  padding: .85rem;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition);
+  font-size: .88rem;
+  font-weight: 600;
+}
+
+.role-card input[type="radio"] { display: none; }
+.role-icon { font-size: 1.6rem; }
+
+.role-card:has(input:checked) {
+  border-color: var(--green-600);
+  background: var(--green-100);
+  color: var(--green-700);
+}
+
+/* ── Primary button ─────────────────────────────────────────────────────── */
+
+.btn-primary {
+  width: 100%;
+  padding: .8rem;
+  background: var(--green-700);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transition), opacity var(--transition);
+  margin-top: .5rem;
+}
+
+.btn-primary:hover  { background: var(--green-600); }
+.btn-primary:active { opacity: .85; }
+.btn-primary:disabled { opacity: .55; cursor: not-allowed; }
+
+/* ── Alert ───────────────────────────────────────────────────────────────── */
+
+.alert {
+  padding: .75rem 1rem;
+  border-radius: 6px;
+  font-size: .88rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.alert.hidden { display: none; }
+
+.alert.error   { background: var(--danger-bg);  color: var(--danger);  border: 1px solid #ef9a9a; }
+.alert.success { background: var(--success-bg); color: var(--success); border: 1px solid #a5d6a7; }
+
+/* ── Footer ─────────────────────────────────────────────────────────────── */
+
+.site-footer {
+  background: var(--earth-100);
+  border-top: 1px solid var(--border);
+  text-align: center;
+  padding: 1rem;
+  font-size: .8rem;
+  color: var(--muted);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 520px) {
+  .tab-panel { padding: 1.25rem 1rem; }
+  .field-row { grid-template-columns: 1fr; }
+}

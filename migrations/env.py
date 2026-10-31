@@ -18,6 +18,8 @@ from app.models.base import Base  # noqa: F401 — registers Base.metadata
 # Import all models so Alembic can detect them for autogenerate
 import app.models.user          # noqa: F401
 import app.models.refresh_token # noqa: F401
+import app.models.category      # noqa: F401
+import app.models.product       # noqa: F401
 
 settings_app = get_settings()
 

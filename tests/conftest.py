@@ -2,14 +2,16 @@
 
 from __future__ import annotations
 
+import uuid
+
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
-from app.db.session import SessionLocal
 from app.main import app
 from app.models.base import Base
+from app.models.category import Category
 from app.core.dependencies import get_db
 
 # Use an in-memory SQLite database for tests — no PostgreSQL required.
@@ -23,10 +25,28 @@ test_engine = create_engine(
 TestingSessionLocal = sessionmaker(bind=test_engine, autocommit=False, autoflush=False)
 
 
+# Default categories (mirrors migration 0002)
+_DEFAULT_CATEGORIES = [
+    ("Sayur-mayur",  "sayur"),
+    ("Buah-buahan",  "buah"),
+    ("Perkebunan",   "perkebunan"),
+    ("Padi & Beras", "padi-beras"),
+    ("Rempah",       "rempah"),
+    ("Peternakan",   "peternakan"),
+    ("Perikanan",    "perikanan"),
+    ("Lainnya",      "lainnya"),
+]
+
+
 @pytest.fixture(scope="session", autouse=True)
 def create_test_tables():
-    """Create all tables once for the test session, drop them after."""
+    """Create all tables + seed categories once for the test session."""
     Base.metadata.create_all(bind=test_engine)
+    # Seed categories
+    with TestingSessionLocal() as session:
+        for name, slug in _DEFAULT_CATEGORIES:
+            session.add(Category(id=str(uuid.uuid4()), name=name, slug=slug))
+        session.commit()
     yield
     Base.metadata.drop_all(bind=test_engine)
 

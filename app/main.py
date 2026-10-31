@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.core.config import get_settings
-from app.routers import auth, products
+from app.routers import auth, products, cart, orders
 
 settings = get_settings()
 
@@ -47,6 +47,8 @@ async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONR
 # ---------------------------------------------------------------------------
 app.include_router(auth.router)
 app.include_router(products.router)
+app.include_router(cart.router)
+app.include_router(orders.router)
 
 # ---------------------------------------------------------------------------
 # Uploads served as static files

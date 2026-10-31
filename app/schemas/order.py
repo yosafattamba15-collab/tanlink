@@ -38,7 +38,7 @@ class CartItemOut(BaseModel):
 class CartOut(BaseModel):
     """Full cart response."""
 
-    id: str
+    id: str | None   # None when cart has never been created (empty state)
     items: list[CartItemOut]
     total: Decimal
 

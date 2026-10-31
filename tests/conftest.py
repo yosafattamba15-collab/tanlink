@@ -6,21 +6,25 @@ import uuid
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
 
 from app.main import app
 from app.models.base import Base
 from app.models.category import Category
 from app.core.dependencies import get_db
 
-# Use an in-memory SQLite database for tests — no PostgreSQL required.
-# SQLite is structurally compatible with our models for unit-test purposes.
-TEST_DATABASE_URL = "sqlite:///./test.db"
+# Use a true in-memory SQLite DB with StaticPool so every connection shares
+# the same in-memory DB within a test.  This guarantees a perfectly clean
+# slate for each test (tables are dropped + recreated) with no on-disk file
+# that could leak token_hash UNIQUE violations between tests.
+TEST_DATABASE_URL = "sqlite://"
 
 test_engine = create_engine(
     TEST_DATABASE_URL,
     connect_args={"check_same_thread": False},
+    poolclass=StaticPool,
 )
 TestingSessionLocal = sessionmaker(bind=test_engine, autocommit=False, autoflush=False)
 
@@ -38,11 +42,13 @@ _DEFAULT_CATEGORIES = [
 ]
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="function", autouse=True)
 def create_test_tables():
-    """Create all tables + seed categories once for the test session."""
+    """Create tables + seed categories for every test; drop after.
+
+    StaticPool + in-memory DB means each test sees a completely fresh DB.
+    """
     Base.metadata.create_all(bind=test_engine)
-    # Seed categories
     with TestingSessionLocal() as session:
         for name, slug in _DEFAULT_CATEGORIES:
             session.add(Category(id=str(uuid.uuid4()), name=name, slug=slug))

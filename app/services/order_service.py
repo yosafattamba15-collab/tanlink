@@ -200,7 +200,7 @@ def list_my_orders(db: Session, buyer: User) -> list[dict]:
         .options(joinedload(Order.items).joinedload(OrderItem.product))
         .where(Order.buyer_id == buyer.id)
         .order_by(Order.created_at.desc())
-    ).scalars().all()
+    ).unique().scalars().all()
     return [_serialize_order(o) for o in orders]
 
 

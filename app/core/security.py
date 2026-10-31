@@ -39,11 +39,16 @@ TokenType = Literal["access", "refresh"]
 
 
 def _create_token(subject: str, token_type: TokenType, expires_delta: timedelta) -> str:
-    """Internal helper that builds a signed JWT."""
+    """Internal helper that builds a signed JWT.
+
+    A random `jti` (JWT ID) is included so two tokens issued for the same
+    user in the same second always produce different hashes.
+    """
     now = datetime.now(timezone.utc)
     payload = {
-        "sub": subject,          # user UUID as string
+        "sub": subject,
         "type": token_type,
+        "jti": generate_jti(),   # unique per token — prevents hash collisions
         "iat": now,
         "exp": now + expires_delta,
     }

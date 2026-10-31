@@ -105,7 +105,10 @@ def refresh_access_token(db: Session, raw_refresh_token: str) -> tuple[str, str,
     )
     if not record or record.revoked:
         raise invalid_exc
-    if record.expires_at < datetime.now(timezone.utc):
+    # SQLite stores datetimes as naive; strip tzinfo for a safe comparison.
+    expires_at = record.expires_at
+    now_utc = datetime.now(timezone.utc).replace(tzinfo=None)
+    if expires_at.replace(tzinfo=None) < now_utc:
         raise invalid_exc
 
     # 3. Revoke old token (rotation)

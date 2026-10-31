@@ -5,6 +5,7 @@ from __future__ import annotations
 from decimal import Decimal
 
 from fastapi import APIRouter, File, Form, Query, UploadFile, status
+from fastapi.responses import Response
 
 from app.core.dependencies import DbDep, FarmerDep
 from app.schemas.product import (
@@ -45,8 +46,8 @@ def list_products(
     search: str | None = Query(default=None, description="Cari berdasarkan nama"),
     category_slug: str | None = Query(default=None),
     province: str | None = Query(default=None),
-    min_price: float | None = Query(default=None, ge=0),
-    max_price: float | None = Query(default=None, ge=0),
+    min_price: Decimal | None = Query(default=None, ge=0),
+    max_price: Decimal | None = Query(default=None, ge=0),
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=20, ge=1, le=100),
 ) -> ProductListOut:
@@ -166,8 +167,10 @@ async def update_product(
 @router.delete(
     "/products/{product_id}",
     status_code=status.HTTP_204_NO_CONTENT,
+    response_class=Response,
     summary="Hapus produk (petani pemilik) — soft delete",
 )
-def delete_product(product_id: str, db: DbDep, farmer: FarmerDep) -> None:
+def delete_product(product_id: str, db: DbDep, farmer: FarmerDep) -> Response:
     """Nonaktifkan produk (soft-delete).  Produk tidak akan muncul di listing publik."""
     product_service.delete_product(db, farmer, product_id)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

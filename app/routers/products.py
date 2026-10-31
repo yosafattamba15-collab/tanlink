@@ -2,18 +2,18 @@
 
 from __future__ import annotations
 
-import json
-from typing import Annotated
+from decimal import Decimal
 
-from fastapi import APIRouter, Depends, File, Form, Query, UploadFile, status
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, File, Form, Query, UploadFile, status
 
-from app.core.dependencies import DbDep, FarmerDep, CurrentUser
+from app.core.dependencies import DbDep, FarmerDep
 from app.schemas.product import (
     CategoryOut,
+    ProductCreate,
     ProductFilter,
     ProductListOut,
     ProductOut,
+    ProductUpdate,
 )
 from app.services import product_service
 
@@ -113,9 +113,6 @@ async def create_product(
     """Buat produk baru.  Kirim sebagai `multipart/form-data`.
     Foto opsional (jpg/png/webp, maks 3 MB).
     """
-    from app.schemas.product import ProductCreate
-    from decimal import Decimal
-
     payload = ProductCreate(
         category_id=category_id,
         name=name,
@@ -151,9 +148,6 @@ async def update_product(
     image: UploadFile | None = File(default=None),
 ) -> ProductOut:
     """Update satu atau lebih field produk.  Kirim sebagai `multipart/form-data`."""
-    from app.schemas.product import ProductUpdate
-    from decimal import Decimal
-
     payload = ProductUpdate(
         category_id=category_id,
         name=name,
